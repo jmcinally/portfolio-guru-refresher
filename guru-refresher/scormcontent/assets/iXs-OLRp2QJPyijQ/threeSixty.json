@@ -1,0 +1,69 @@
+{
+  "version": "3.14.15225.0",
+  "scenes": [
+    {
+      "title": "Scenarios"
+    }
+  ],
+  "slides": [
+    {
+      "id": "6h0VDJ6mv2P",
+      "title": "Home",
+      "scene_index": "1.1"
+    },
+    {
+      "id": "60AB4cy3bBt",
+      "title": "Full Video",
+      "scene_index": "1.2"
+    },
+    {
+      "id": "5jKMledQgVg",
+      "title": "Collections",
+      "scene_index": "1.3"
+    },
+    {
+      "id": "6GlnEziO3Y5",
+      "title": "Search Doc",
+      "scene_index": "1.4"
+    },
+    {
+      "id": "5Zbu5nPaDtK",
+      "title": "Precise",
+      "scene_index": "1.5"
+    },
+    {
+      "id": "6V8abNsT7LW",
+      "title": "Trust Score",
+      "scene_index": "1.6"
+    },
+    {
+      "id": "6qcZBaCpwvt",
+      "title": "Using Extension",
+      "scene_index": "1.7"
+    },
+    {
+      "id": "6YRKAf4fJ8u",
+      "title": "Fav Cards",
+      "scene_index": "1.8"
+    },
+    {
+      "id": "5wEv7bKaQKf",
+      "title": "Extension Filters",
+      "scene_index": "1.9"
+    },
+    {
+      "id": "5mgVxTlIbg1",
+      "title": "Recent",
+      "scene_index": "1.10"
+    }
+  ],
+  "player": {
+    "name": "classic",
+    "width": 1940,
+    "height": 1151
+  },
+  "stage": {
+    "width": 1920,
+    "height": 1080
+  }
+}

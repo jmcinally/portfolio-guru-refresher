@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tincan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://projecttincan.com/tincan.xsd">
+	<activities>
+		<activity id="http://5r0O0MyUedL_course_id" type="http://adlnet.gov/expapi/activities/course">
+			<name lang="und">Guru Refresher</name>
+			<description lang="und" />
+			<launch lang="und">story.html</launch>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/6h0VDJ6mv2P" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Home</name>
+			<description lang="und">Home</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/60AB4cy3bBt" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Full Video</name>
+			<description lang="und">Full Video</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/5jKMledQgVg" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Collections</name>
+			<description lang="und">Collections</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/6GlnEziO3Y5" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Search Doc</name>
+			<description lang="und">Search Doc</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/5Zbu5nPaDtK" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Precise</name>
+			<description lang="und">Precise</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/6V8abNsT7LW" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Trust Score</name>
+			<description lang="und">Trust Score</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/6qcZBaCpwvt" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Using Extension</name>
+			<description lang="und">Using Extension</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/6YRKAf4fJ8u" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Fav Cards</name>
+			<description lang="und">Fav Cards</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/5wEv7bKaQKf" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Extension Filters</name>
+			<description lang="und">Extension Filters</description>
+		</activity>
+		<activity id="http://5r0O0MyUedL_course_id/5mgVxTlIbg1" type="http://adlnet.gov/expapi/activities/module">
+			<name lang="und">Recent</name>
+			<description lang="und">Recent</description>
+		</activity>
+	</activities>
+</tincan>
