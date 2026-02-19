@@ -29,11 +29,7 @@
         const allowOutsideDriver = true
 
         function shouldLoad() {
-          if(allowOutsideDriver)
-            return true
-
-          return window.location.protocol === 'file:'
-            || (window !== window.parent && typeof window.parent.IsLmsPresent === 'function')
+          return true; 
         }
 
         function loadModule(manifest) {
