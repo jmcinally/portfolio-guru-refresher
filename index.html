@@ -93,38 +93,52 @@
           return loadModule(manifest[name])
         }
 
-        // 1. GLOBAL PATH CONSTANTS
-        const BASE_FOLDER = "/portfolio-guru-refresher/";
-        window.rise = window.rise || {};
-        window.rise.baseUrl = BASE_FOLDER;
+        // 1. NEUTRALIZE CROSS-ORIGIN SECURITY (The "Parent" Fix)
+        (function() {
+            try {
+                const win = window;
+                // Redefine parent/top to point to self so 'pick' function doesn't crash
+                Object.defineProperty(win, 'parent', { get: () => win });
+                Object.defineProperty(win, 'top', { get: () => win });
+            } catch (e) { console.warn("Security bypass failed, trying fallback..."); }
+        })();
 
-        // 2. THE INTERCEPTOR (Fixes the 404 / Unexpected Token Error)
+        // 2. MOCK LMS API (Global Level)
+        const mockAPI = {
+            LMSInitialize: () => "true",
+            LMSGetValue: () => "incomplete",
+            LMSSetValue: () => "true",
+            LMSCommit: () => "true",
+            LMSFinish: () => "true",
+            LMSGetLastError: () => "0",
+            GetErrorString: () => "No Error"
+        };
+        window.API = mockAPI;
+        window.API_1484_11 = mockAPI;
+
+        // 3. BRUTE FORCE FETCH REDIRECT
         const originalFetch = window.fetch;
-        window.fetch = function() {
-            if (typeof arguments[0] === 'string' && arguments[0].includes('undefined')) {
-                // If it tries to fetch 'undefined/boot', redirect it to the root of your folder
-                arguments[0] = arguments[0].replace(/.*undefined\/boot\/.*/, BASE_FOLDER + 'index.html');
-                console.warn("Intercepted broken Rise URL, redirecting to local.");
+        window.fetch = function(...args) {
+            if (typeof args[0] === 'string' && args[0].includes('undefined')) {
+                console.log("Fixing undefined boot path...");
+                // Point to the local folder instead of 'undefined/boot'
+                args[0] = window.location.href.split('?')[0]; 
             }
-            return originalFetch.apply(this, arguments);
+            return originalFetch.apply(this, args);
         };
 
-        // 3. NEUTRALIZE CROSS-ORIGIN ERRORS (Fixes the SecurityError)
-        window.API = { LMSInitialize: () => "true", LMSGetValue: () => "", LMSSetValue: () => "true", LMSCommit: () => "true", LMSFinish: () => "true", LMSGetLastError: () => "0" };
-        window.API_1484_11 = window.API;
-        
-        // Hide 'parent' so the pick() function doesn't crash trying to access cross-origin frames
-        try {
-            Object.defineProperty(window, 'parent', { get: function() { return window; } });
-            Object.defineProperty(window, 'top', { get: function() { return window; } });
-        } catch (e) { console.log("Note: Could not override parent window."); }
-
-        // 4. PREVENT DUAL INITIALIZATION (Fixes rise-math error)
-        if (!window.__RISE_RUNNING__) {
-            window.__RISE_RUNNING__ = true;
+        // 4. INITIALIZATION GUARD
+        if (!window.__ALREADY_RUNNING__) {
+            window.__ALREADY_RUNNING__ = true;
             window.onload = function() {
                 __loadEntry().then(() => {
-                    console.log("Rise Engine: Force-Boot Active");
+                    console.log("Rise Engine: Total Isolation Mode Active");
+                }).catch(err => {
+                    if (err.name === 'NotSupportedError') {
+                        console.log("Ignored duplicate CustomElement registration.");
+                    } else {
+                        console.error("Boot error:", err);
+                    }
                 });
             };
         }
