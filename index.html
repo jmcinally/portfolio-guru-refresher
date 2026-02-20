@@ -93,37 +93,40 @@
           return loadModule(manifest[name])
         }
 
-        // 1. DYNAMIC FOLDER FIX
-        const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+        // 1. GLOBAL PATH CONSTANTS
+        const BASE_FOLDER = "/portfolio-guru-refresher/";
         window.rise = window.rise || {};
-        window.rise.baseUrl = currentPath;
+        window.rise.baseUrl = BASE_FOLDER;
 
-        // 2. SCORM DRIVER PATHING
-        // This tells the engine to look inside your 'scormdriver' folder
-        window.scormDriverPath = currentPath + "scormdriver/"; 
-        window.scormDriverConfig = { isStandalone: true };
-
-        // 3. MOCK API
-        const mockAPI = {
-          LMSInitialize: () => "true",
-          LMSGetValue: () => "incomplete",
-          LMSSetValue: () => "true",
-          LMSCommit: () => "true",
-          LMSFinish: () => "true",
-          LMSGetLastError: () => "0"
+        // 2. THE INTERCEPTOR (Fixes the 404 / Unexpected Token Error)
+        const originalFetch = window.fetch;
+        window.fetch = function() {
+            if (typeof arguments[0] === 'string' && arguments[0].includes('undefined')) {
+                // If it tries to fetch 'undefined/boot', redirect it to the root of your folder
+                arguments[0] = arguments[0].replace(/.*undefined\/boot\/.*/, BASE_FOLDER + 'index.html');
+                console.warn("Intercepted broken Rise URL, redirecting to local.");
+            }
+            return originalFetch.apply(this, arguments);
         };
-        window.API = mockAPI;
-        window.API_1484_11 = mockAPI;
 
-        // 4. LOAD GUARD
-        if (!window.__RISE_INITIALIZED__) {
-          window.__RISE_INITIALIZED__ = true;
-          window.onload = function() {
-            try { Object.defineProperty(window, 'parent', { value: window }); } catch (e) {}
-            __loadEntry().then(() => {
-              console.log("Rise Engine: SCORM Folder Redirection Active");
-            });
-          };
+        // 3. NEUTRALIZE CROSS-ORIGIN ERRORS (Fixes the SecurityError)
+        window.API = { LMSInitialize: () => "true", LMSGetValue: () => "", LMSSetValue: () => "true", LMSCommit: () => "true", LMSFinish: () => "true", LMSGetLastError: () => "0" };
+        window.API_1484_11 = window.API;
+        
+        // Hide 'parent' so the pick() function doesn't crash trying to access cross-origin frames
+        try {
+            Object.defineProperty(window, 'parent', { get: function() { return window; } });
+            Object.defineProperty(window, 'top', { get: function() { return window; } });
+        } catch (e) { console.log("Note: Could not override parent window."); }
+
+        // 4. PREVENT DUAL INITIALIZATION (Fixes rise-math error)
+        if (!window.__RISE_RUNNING__) {
+            window.__RISE_RUNNING__ = true;
+            window.onload = function() {
+                __loadEntry().then(() => {
+                    console.log("Rise Engine: Force-Boot Active");
+                });
+            };
         }
 
         async function __fetchCourse() {
