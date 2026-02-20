@@ -93,27 +93,25 @@
           return loadModule(manifest[name])
         }
 
-        // Mock API to prevent SecurityError and CommitData crashes
-        window.API = {
-          LMSInitialize: function() { return "true"; },
-          LMSGetValue: function() { return ""; },
-          LMSSetValue: function() { return "true"; },
-          LMSCommit: function() { return "true"; },
-          LMSFinish: function() { return "true"; },
-          LMSGetLastError: function() { return 0; },
-          LMSGetErrorString: function() { return "No error"; },
-          LMSGetDiagnostic: function() { return "No diagnostic"; }
-        };
+        // Configuration to fix the "undefined/boot" 404 error
+        window.rise = window.rise || {};
+        window.rise.baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
+        
+        // SCORM Mock
+        window.API = { LMSInitialize: () => "true", LMSGetValue: () => "", LMSSetValue: () => "true", LMSCommit: () => "true", LMSFinish: () => "true" };
         window.API_1484_11 = window.API;
 
+        let isLoaded = false;
         window.onload = function() {
-          // Force context to local to stop cross-origin tracking crashes
+          if (isLoaded) return; // Prevents the "rise-math" double-registry error
+          isLoaded = true;
+
           try {
             Object.defineProperty(window, 'parent', { value: window });
-          } catch (e) { console.warn("Parent redirect failed, continuing..."); }
+          } catch (e) {}
 
           __loadEntry().then(() => {
-            console.log("Rise Engine Loaded - SCORM Mock Active");
+            console.log("Rise Engine Ready - Pathing Fix Applied");
           });
         };
 
